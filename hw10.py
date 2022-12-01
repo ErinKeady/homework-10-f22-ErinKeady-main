@@ -9,6 +9,7 @@ from sklearn import metrics
 
 from utils import load_MNIST
 
+
 def conf_matrix(y_pred, y_true, num_class):
     """
     agrs:
@@ -30,6 +31,7 @@ def conf_matrix(y_pred, y_true, num_class):
 
     return confmatrix
 
+
 def get_model(name, params):
     """
     args:
@@ -41,21 +43,21 @@ def get_model(name, params):
     """
     model = None
     if name == "KNN":
-        k = params # Note that the expected parameters have already been extracted here
+        k = params  # Note that the expected parameters have already been extracted here
         # Define KNN model using sklearn KNeighborsClassifier object 
         # Note: you should include n_neighbors=k as an argument when initializing the model
 
         model = KNeighborsClassifier(n_neighbors=k)
 
     elif name == "SVM":
-        rand_state, prob = params # Note that the expected parameters have already been extracted here
+        rand_state, prob = params  # Note that the expected parameters have already been extracted here
         # Define SVM model using sklearn SVC object
         # Note: you should include random_state=rand_state and probability=prob as arguments when initializing the model
 
         model = SVC(probability=prob, random_state=rand_state)
 
     elif name == "MLP":
-        hl_sizes, rand_state, act_func = params # Note that the expected parameters have already been extracted here
+        hl_sizes, rand_state, act_func = params  # Note that the expected parameters have already been extracted here
         # Define MLP model using sklearn MLPClassifier object
         # Note: you should include hidden_layer_sizes=hl_sizes, random_state=rand_state, and activation=act_func when initializing the model
 
@@ -65,6 +67,7 @@ def get_model(name, params):
         print("ERROR: Model name not recognized/supported. Returned None")
 
     return model
+
 
 def get_model_results(model_name, params, train_data, train_labels, test_data, test_labels, num_class):
     """
@@ -107,29 +110,32 @@ def get_model_results(model_name, params, train_data, train_labels, test_data, t
 if __name__ == "__main__":
     train_data, train_labels, test_data, test_labels = load_MNIST()
     num_class = 10
-    
+
     model_name = "KNN"
-    for k in range(1,6):
-        print(str(k)+"-neighbors result:")
+    for k in range(1, 6):
+        print(str(k) + "-neighbors result:")
         params = k
-        accuracy, confusion_matrix, auc_score = get_model_results(model_name, params, train_data, train_labels, test_data, test_labels, num_class)
+        accuracy, confusion_matrix, auc_score = get_model_results(model_name, params, train_data, train_labels,
+                                                                  test_data, test_labels, num_class)
         print("Accuracy:", accuracy)
         print("AUROC Score:", auc_score)
         print(confusion_matrix)
         print()
-        
+
     model_name = "SVM"
     params = [1, True]
-    accuracy, confusion_matrix, auc_score = get_model_results(model_name, params, train_data, train_labels, test_data, test_labels, num_class)
+    accuracy, confusion_matrix, auc_score = get_model_results(model_name, params, train_data, train_labels, test_data,
+                                                              test_labels, num_class)
     print("SVM Result")
     print("Accuracy:", accuracy)
     print("AUROC Score:", auc_score)
     print(confusion_matrix)
     print()
-    
+
     model_name = "MLP"
-    params = [(15,10), 1, "relu"]
-    accuracy, confusion_matrix, auc_score = get_model_results(model_name, params, train_data, train_labels, test_data, test_labels, num_class)
+    params = [(15, 10), 1, "relu"]
+    accuracy, confusion_matrix, auc_score = get_model_results(model_name, params, train_data, train_labels, test_data,
+                                                              test_labels, num_class)
     print("MLP Result")
     print("Accuracy:", accuracy)
     print("AUROC Score:", auc_score)
